@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic JSON Loader</title>
+  </head>
+  <body>
+    <h1>Dynamic JSON Demo</h1>
+    <p>Select a website to load its JSON data:</p>
+    <select id="siteSelector">
+      <option value="website1/json1.json">Website 1</option>
+      <option value="website2/json2.json">Website 2</option>
+    </select>
+    <button id="loadJson">Load JSON</button>
+    <pre id="jsonOutput">JSON data will appear here...</pre>
+
+    <script>
+      // Function to load the selected JSON file
+      document.getElementById("loadJson").addEventListener("click", () => {
+        const selectedFile = document.getElementById("siteSelector").value;
+
+        fetch(selectedFile)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("jsonOutput").textContent = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          })
+          .catch((error) => {
+            document.getElementById(
+              "jsonOutput"
+            ).textContent = `Error loading JSON: ${error}`;
+          });
+      });
+    </script>
+  </body>
+</html>
